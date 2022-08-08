@@ -1,0 +1,58 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+    <form action="{{ path('multiple.add.to.cart') }}" method="post">
+        <div class="row pb-4">
+            <div class="col-2">
+                <button type="button" class="btn btn-light">Enter articles</button>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-light">Upload CSV</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>
+                    Please enter the articles and quantities you want to order.
+                    The availability ot the article is checked and displayed directly
+                    while typing. You can enter all data completely via keyboard.
+                    In the result list, you can navigate through the results with
+                    the arrow up an arrow down key. With the enter key, you can select the correct entry.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <p><b>Article</b></p>
+            </div>
+            <div class="col-2">
+                <p><b>Quantity</b></p>
+            </div>
+        </div>
+        {% for i in 1..max %}
+            <div class="row">
+                <div class="col-4 form-group">
+                    <input type="text" list="suggested-products" name="item{{ i }}" class="form-control"
+                           placeholder="Search for articles..">
+                    <datalist id="suggested-products">
+                        {% for product in products %}
+                            {% if product.name is not null %}
+                                <option value="{{ product.id }}">{{ product.name }} - {{ product.availableStock }} in
+                                    stock / price - {{ product.price.elements[currency].gross }} each
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-2 form-group">
+                    <input type="number" name="qnt{{ i }}" class="form-control" placeholder="Quantity">
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-light">Add to shopping list</button>
+        <input type="hidden" name="immutable" value="secret">
+        {{ sw_csrf("multiple.add.to.cart", {'mode': "input"}) }}
+    </form>
+{% endblock %}
+
+

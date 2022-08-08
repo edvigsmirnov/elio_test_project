@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="ElioTest\Service\SearchService">
+            <argument type="service" id="product.repository"/>
+        </service>
+        <service id="ElioTest\Service\ValidateFormService"/>
+        <service id="ElioTest\Storefront\Controller\ElioTestController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <argument type="service" id="ElioTest\Service\SearchService"/>
+            <argument type="service" id="ElioTest\Service\ValidateFormService"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\LineItemFactoryRegistry"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+        </service>
+    </services>
+</container>
